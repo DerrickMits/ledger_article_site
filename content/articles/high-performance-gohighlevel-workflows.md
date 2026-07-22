@@ -16,20 +16,20 @@ GoHighLevel provides a versatile workflow engine capable of handling complex lea
 ```mermaid
 graph TD
     A[Inbound Lead Submits Form] -->|Trigger| WF1[Workflow 1: Lead Nurturing]
-    WF1 --> B[Create Opportunity: NEW LEAD Stage]
+    WF1 --> B[Create Opportunity: NEW LEAD]
     WF1 --> C{Lead Responds?}
-    C -->|Yes| WF2[Workflow 2: Customer Replied Hot Lead]
-    C -->|No| D[Continue Scheduled Outreach / Stop on Business Hours]
-    WF2 --> E[Update Opportunity: HOT LEAD Stage]
-    WF2 --> F[Send Internal Alert to Dr. Bob]
+    C -->|Yes| WF2[Workflow 2: Hot Lead Routing]
+    C -->|No| D[Continue Outreach, Stop on Business Hours]
+    WF2 --> E[Update Opportunity: HOT LEAD]
+    WF2 --> F[Send Internal Alert to Provider]
 
     A2[Customer Books Appointment] -->|Trigger| WF3[Workflow 3: Appointment Booked]
     WF3 --> G[Send Confirmation Email with Variables]
-    WF3 --> H[Send Push Notification to Dr. Bob]
-    WF3 --> I[Update Opportunity: BOOKED STAGE]
+    WF3 --> H[Send Push Notification to Provider]
+    WF3 --> I[Update Opportunity: BOOKED]
 
     G2[Appointment Marked No Show] -->|Trigger| WF4[Workflow 4: Post Appointment No Show]
-    WF4 --> J[Update Opportunity: NO SHOW Stage]
+    WF4 --> J[Update Opportunity: NO SHOW]
     WF4 --> K[Trigger Automated Re Engagement Sequence]
 ```
 
@@ -41,15 +41,15 @@ The primary objective of the first workflow is acknowledging new inquiries, upda
 
 ```mermaid
 flowchart TD
-    Start([Form Submitted Trigger]) --> Config[Enable Allow Re entry]
-    Config --> Opp[Create Opportunity: Pipeline -> NEW LEAD]
-    Opp --> Comm[Outgoing Communication: Email / SMS]
-    Comm --> Window{Is it Business Hours? Mon Fri, 9 AM to 5 PM}
+    Start([Form Submitted Trigger]) --> Config[Enable Re entry]
+    Config --> Opp[Create Opportunity: Pipeline to NEW LEAD]
+    Opp --> Comm[Outgoing Communication: Email or SMS]
+    Comm --> Window{Within Business Hours? Mon Fri, 9 AM to 5 PM}
     Window -->|Yes| Send[Send Message Instantly]
     Window -->|No| Hold[Wait for Next Operational Window]
     Send --> Monitor{Lead Replies?}
     Hold --> Monitor
-    Monitor -->|Yes| Stop[Stop on Response Condition Met, Halt Workflow]
+    Monitor -->|Yes| Stop[Stop on Response, Halt Workflow]
     Monitor -->|No| End[Continue Follow up Timeline]
 ```
 
@@ -74,10 +74,10 @@ When a prospect replies to an automated outreach sequence, they transition from 
 ```mermaid
 flowchart TD
     Trigger([Customer Replied Trigger]) --> Filter[Filter: Reply to Workflow 1]
-    Filter --> Move[Move Opportunity Stage -> HOT LEAD]
-    Move --> Notify[Send Internal Notification: Email / SMS]
-    Notify --> Data[Inject Dynamic Values: Contact Name and Message Body]
-    Data --> Alert[Deliver Alert directly to Dr. Bob]
+    Filter --> Move[Move Opportunity Stage to HOT LEAD]
+    Move --> Notify[Send Internal Notification: Email or SMS]
+    Notify --> Data[Inject Dynamic Values: Contact Name and Message]
+    Data --> Alert[Deliver Alert to Provider]
 ```
 
 ### Step 1: Reply Filtering
@@ -95,11 +95,11 @@ Securing a calendar booking represents a key conversion milestone. The system mu
 
 ```mermaid
 flowchart TD
-    Trigger([Customer Booked Appointment]) --> Email[Action 1: Send Builder Email Template]
-    Email --> Variables[Populate Dynamic Variables: User Name, Start Time, Location Link, Cancel and Reschedule Links]
-    Variables --> AppPush[Action 2: Send Mobile Push Notification to Dr. Bob]
-    AppPush --> Redirect[Set On Click Redirect -> Opportunity Card]
-    Redirect --> Stage[Action 3: Move Stage -> BOOKED STAGE]
+    Trigger([Customer Booked Appointment]) --> Email[Send Builder Email Template]
+    Email --> Variables[Populate Dynamic Variables: Name, Time, Location, Links]
+    Variables --> AppPush[Send Mobile Push Notification to Provider]
+    AppPush --> Redirect[Set On Click Redirect to Opportunity Card]
+    Redirect --> Stage[Move Stage to BOOKED]
 ```
 
 ### Step 1: Calendar Triggers and Email Templates
@@ -123,10 +123,10 @@ When a scheduled appointment is missed, automated workflows preserve staff time 
 ```mermaid
 flowchart TD
     Trigger([Appointment Status Trigger]) --> Filter[Filter Status: No Show]
-    Filter --> ReEntry[Verify Setting: Allow Re entry ON]
-    ReEntry --> Stage[Move Opportunity Stage -> NO SHOW]
+    Filter --> ReEntry[Verify Setting: Re entry ON]
+    ReEntry --> Stage[Move Opportunity Stage to NO SHOW]
     Stage --> Sequence[Activate Secondary Nurture Sequence]
-    Sequence --> SMS[Automated SMS / Email: Invite Client to Reschedule]
+    Sequence --> SMS[Automated SMS or Email: Invite to Reschedule]
 ```
 
 ### Step 1: Status Triggers and Pipeline Alignment
