@@ -56,7 +56,7 @@ export default async function ArticlePage({
         <header className="mx-auto max-w-3xl px-6 sm:px-8 animate-fade-up">
           <Link
             href="/"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-warm-500 dark:text-warm-400 hover:text-warm-900 dark:hover:text-warm-100 transition-colors mb-8"
+            className="group inline-flex items-center gap-2 text-sm font-medium text-warm-500 dark:text-warm-400 hover:text-warm-900 dark:hover:text-warm-100 transition-colors block w-fit"
           >
             <ArrowLeft
               className="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1"
@@ -66,7 +66,7 @@ export default async function ArticlePage({
           </Link>
 
           {article.category && (
-            <span className="inline-flex items-center px-3 py-1 mb-5 rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-accent/10 text-accent dark:bg-warm-300/15 dark:text-warm-200 border border-accent/20 dark:border-warm-300/25">
+            <span className="inline-flex items-center mt-6 mb-7 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-accent/10 text-accent dark:bg-warm-300/15 dark:text-warm-200 border border-accent/20 dark:border-warm-300/25 block w-fit">
               {article.category}
             </span>
           )}
