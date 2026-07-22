@@ -66,9 +66,11 @@ export default async function ArticlePage({
           </Link>
 
           {article.category && (
-            <span className="inline-flex items-center mt-6 mb-7 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-accent/10 text-accent dark:bg-warm-300/15 dark:text-warm-200 border border-accent/20 dark:border-warm-300/25 block w-fit">
-              {article.category}
-            </span>
+            <div className="mt-8 mb-8">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-accent/10 text-accent dark:bg-warm-300/15 dark:text-warm-200 border border-accent/20 dark:border-warm-300/25">
+                {article.category}
+              </span>
+            </div>
           )}
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-warm-500 dark:text-warm-400 mb-6">
