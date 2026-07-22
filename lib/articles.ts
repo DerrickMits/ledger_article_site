@@ -9,6 +9,7 @@ export interface Article {
   readTime: string;
   excerpt: string;
   author: string;
+  category: string;
   content: string;
 }
 
@@ -19,6 +20,7 @@ export interface ArticleSummary {
   readTime: string;
   excerpt: string;
   author: string;
+  category: string;
 }
 
 const articlesDirectory = path.join(process.cwd(), "content", "articles");
@@ -37,6 +39,7 @@ function readArticle(fullPath: string, slug: string): Article | null {
     readTime: (data.readTime as string) ?? "5 min read",
     excerpt: (data.excerpt as string) ?? "",
     author: (data.author as string) ?? "Derrick Odiwuor",
+    category: (data.category as string) ?? "",
     content,
   };
 }
@@ -59,6 +62,7 @@ export function getAllArticles(): ArticleSummary[] {
       readTime: article.readTime,
       excerpt: article.excerpt,
       author: article.author,
+      category: article.category,
     } : null;
     return summary;
   });

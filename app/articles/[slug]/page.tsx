@@ -65,6 +65,12 @@ export default async function ArticlePage({
             All articles
           </Link>
 
+          {article.category && (
+            <span className="inline-flex items-center px-3 py-1 mb-5 rounded-full text-xs font-semibold uppercase tracking-[0.18em] bg-accent/10 text-accent dark:bg-warm-300/15 dark:text-warm-200 border border-accent/20 dark:border-warm-300/25">
+              {article.category}
+            </span>
+          )}
+
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-warm-500 dark:text-warm-400 mb-6">
             <span className="inline-flex items-center gap-1.5">
               <CalendarDays className="w-4 h-4" strokeWidth={1.8} />
