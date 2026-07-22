@@ -13,11 +13,45 @@ In modern customer relationship management, slow response times lead directly to
 
 GoHighLevel provides a versatile workflow engine capable of handling complex lead journeys. This guide walks through constructing a complete four stage automation system designed to handle inbound forms, engaged customer replies, appointment bookings, and missed meeting follow ups.
 
+```mermaid
+graph TD
+    A[Inbound Lead Submits Form] -->|Trigger| WF1[Workflow 1: Lead Nurturing]
+    WF1 --> B[Create Opportunity: NEW LEAD Stage]
+    WF1 --> C{Lead Responds?}
+    C -->|Yes| WF2[Workflow 2: Customer Replied Hot Lead]
+    C -->|No| D[Continue Scheduled Outreach / Stop on Business Hours]
+    WF2 --> E[Update Opportunity: HOT LEAD Stage]
+    WF2 --> F[Send Internal Alert to Dr. Bob]
+
+    A2[Customer Books Appointment] -->|Trigger| WF3[Workflow 3: Appointment Booked]
+    WF3 --> G[Send Confirmation Email with Variables]
+    WF3 --> H[Send Push Notification to Dr. Bob]
+    WF3 --> I[Update Opportunity: BOOKED STAGE]
+
+    G2[Appointment Marked No Show] -->|Trigger| WF4[Workflow 4: Post Appointment No Show]
+    WF4 --> J[Update Opportunity: NO SHOW Stage]
+    WF4 --> K[Trigger Automated Re Engagement Sequence]
+```
+
 ---
 
 ## Workflow 1: Initial Inbound Lead Nurturing
 
 The primary objective of the first workflow is acknowledging new inquiries, updating pipeline stages, and establishing communication rules that respect standard business hours.
+
+```mermaid
+flowchart TD
+    Start([Form Submitted Trigger]) --> Config[Enable Allow Re entry]
+    Config --> Opp[Create Opportunity: Pipeline -> NEW LEAD]
+    Opp --> Comm[Outgoing Communication: Email / SMS]
+    Comm --> Window{Is it Business Hours? Mon Fri, 9 AM to 5 PM}
+    Window -->|Yes| Send[Send Message Instantly]
+    Window -->|No| Hold[Wait for Next Operational Window]
+    Send --> Monitor{Lead Replies?}
+    Hold --> Monitor
+    Monitor -->|Yes| Stop[Stop on Response Condition Met, Halt Workflow]
+    Monitor -->|No| End[Continue Follow up Timeline]
+```
 
 ### Step 1: Base Configuration and Re Entry Rules
 Begin by navigating to the automation panel inside your sub account, creating a fresh workflow, and titling it Initial Inbound Nurture. Within the workflow settings tab, enable the re entry toggle switch. Allowing re entry ensures that if an existing contact submits a form again in the future, they can enter the follow up sequence smoothly without being blocked by system filters.
@@ -37,6 +71,15 @@ To prevent sending automated messages to a prospect who has already written back
 
 When a prospect replies to an automated outreach sequence, they transition from a passive inquiry into an active, high priority opportunity.
 
+```mermaid
+flowchart TD
+    Trigger([Customer Replied Trigger]) --> Filter[Filter: Reply to Workflow 1]
+    Filter --> Move[Move Opportunity Stage -> HOT LEAD]
+    Move --> Notify[Send Internal Notification: Email / SMS]
+    Notify --> Data[Inject Dynamic Values: Contact Name and Message Body]
+    Data --> Alert[Deliver Alert directly to Dr. Bob]
+```
+
 ### Step 1: Reply Filtering
 Build a new workflow titled Customer Replied Hot Lead. Set the primary trigger to Customer Replied, adding a specific filter that targets replies originating directly from your initial lead nurture sequence.
 
@@ -49,6 +92,15 @@ Build a new workflow titled Customer Replied Hot Lead. Set the primary trigger t
 ## Workflow 3: Appointment Booking Confirmation
 
 Securing a calendar booking represents a key conversion milestone. The system must confirm details with the client while providing immediate visibility to the assigned provider.
+
+```mermaid
+flowchart TD
+    Trigger([Customer Booked Appointment]) --> Email[Action 1: Send Builder Email Template]
+    Email --> Variables[Populate Dynamic Variables: User Name, Start Time, Location Link, Cancel and Reschedule Links]
+    Variables --> AppPush[Action 2: Send Mobile Push Notification to Dr. Bob]
+    AppPush --> Redirect[Set On Click Redirect -> Opportunity Card]
+    Redirect --> Stage[Action 3: Move Stage -> BOOKED STAGE]
+```
 
 ### Step 1: Calendar Triggers and Email Templates
 Name the third sequence Appointment Booked, setting the primary trigger to Customer Booked Appointment linked to your team calendar. Add a Send Email action, selecting a pre formatted builder template from your snapshot assets.
@@ -67,6 +119,15 @@ Add a mobile push notification action assigned to the designated provider. Confi
 ## Workflow 4: Post Appointment Management for No Shows
 
 When a scheduled appointment is missed, automated workflows preserve staff time by immediately updating records and initiating re engagement outreach.
+
+```mermaid
+flowchart TD
+    Trigger([Appointment Status Trigger]) --> Filter[Filter Status: No Show]
+    Filter --> ReEntry[Verify Setting: Allow Re entry ON]
+    ReEntry --> Stage[Move Opportunity Stage -> NO SHOW]
+    Stage --> Sequence[Activate Secondary Nurture Sequence]
+    Sequence --> SMS[Automated SMS / Email: Invite Client to Reschedule]
+```
 
 ### Step 1: Status Triggers and Pipeline Alignment
 Create a fourth sequence titled Post Appointment No Show. Turn on the re entry setting within workflow configuration to handle recurring scheduling events. Set the trigger to Appointment Status, filtering specifically for appointments marked as No Show.

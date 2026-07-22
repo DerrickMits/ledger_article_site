@@ -290,6 +290,55 @@ html {
   outline-color: #FBBF24;
 }
 
+/* ===========================================
+   Mermaid diagram containers
+   =========================================== */
+.article-prose figure {
+  margin: 2.75rem 0;
+}
+
+.article-prose figure:first-child {
+  margin-top: 2rem;
+}
+
+.article-prose figcaption {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #78716C;
+  margin-top: 0.75rem;
+  font-style: italic;
+}
+
+.dark .article-prose figcaption {
+  color: #A8A29E;
+}
+
+/* Container that Mermaid injects its rendered SVG into */
+.article-prose .mermaid-container {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: #FDFBF7;
+  border: 1px solid #E7E5E4;
+}
+
+.dark .article-prose .mermaid-container {
+  background-color: #1C1917;
+  border-color: #44403C;
+}
+
+/* Ensure Mermaid SVGs never overflow on narrow screens */
+.article-prose .mermaid-container,
+.article-prose .mermaid-svg-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.article-prose .mermaid-svg-wrapper svg {
+  max-width: 100%;
+  height: auto;
+}
+
 /* Entrance animation utilities */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(12px); }
