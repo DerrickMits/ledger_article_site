@@ -313,6 +313,46 @@ html {
   color: #A8A29E;
 }
 
+/* ===========================================
+   Inline article images (Markdown ![]() syntax)
+   Treats a paragraph that only contains an image
+   as a figure block, with the next italic line
+   acting as its caption.
+   =========================================== */
+.article-prose p > img:only-child {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 0.75rem;
+  border: 1px solid #E7E5E4;
+  background-color: #FDFBF7;
+  padding: 0.5rem;
+}
+
+.dark .article-prose p > img:only-child {
+  border-color: #44403C;
+  background-color: #1C1917;
+}
+
+/* Caption pattern: image paragraph followed by an italic-only paragraph */
+.article-prose p + p > em:only-child,
+.article-prose p:has(img:only-child) + p > em:only-child {
+  display: block;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #78716C;
+  margin-top: -1rem;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.dark .article-prose p + p > em:only-child,
+.dark .article-prose p:has(img:only-child) + p > em:only-child {
+  color: #A8A29E;
+}
+
 /* Container that Mermaid injects its rendered SVG into */
 .article-prose .mermaid-container {
   overflow-x: auto;

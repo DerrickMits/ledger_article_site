@@ -13,6 +13,10 @@ In modern customer relationship management, slow response times lead directly to
 
 GoHighLevel provides a versatile workflow engine capable of handling complex lead journeys. This guide walks through constructing a complete four stage automation system designed to handle inbound forms, engaged customer replies, appointment bookings, and missed meeting follow ups.
 
+![GoHighLevel four stage workflow overview showing inbound lead nurturing, hot lead routing, appointment booking confirmation, and no show recovery stages.](/images/ghl-workflows-overview.png)
+
+*System overview: the four workflows that power the entire GoHighLevel sales automation pipeline.*
+
 ---
 
 ## Workflow 1: Initial Inbound Lead Nurturing
