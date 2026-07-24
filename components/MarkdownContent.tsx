@@ -4,6 +4,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Mermaid from "./Mermaid";
+import CanvaEmbed from "./CanvaEmbed";
 
 /**
  * Custom `code` handler. Maps a fenced ```mermaid block to <Mermaid>,
@@ -24,6 +25,10 @@ function CodeBlock({
     return <Mermaid chart={String(children)} />;
   }
 
+  if (lang === "canva") {
+    return <CanvaEmbed designId={String(children).trim()} />;
+  }
+
   return (
     <code className={className} {...props}>
       {children}
@@ -32,24 +37,27 @@ function CodeBlock({
 }
 
 /**
- * Custom `pre` handler so we don't render an orphan <pre> around <Mermaid>.
- * If the only child is a mermaid-produced <figure>, pass it through directly.
+ * Custom `pre` handler so we don't render an orphan <pre> around <Mermaid> or
+ * <CanvaEmbed>. react-markdown wraps any fenced-code-block component output in
+ * a <pre>; if the only child is one of our custom-rendered components, unwrap
+ * it so we don't get <pre>-style typography and scrollbars around the output.
  */
 function PreBlock({
   children,
 }: {
   children?: React.ReactNode;
 }) {
-  // react-markdown wraps our <Mermaid> in a <pre>; detect that case and unwrap.
   const childArray = React.Children.toArray(children);
-  const isMermaidOnly =
+  const childType = (childArray[0] as { type?: { name?: string } })?.type;
+  const childName = typeof childType === "function" ? childType.name : undefined;
+
+  const isCustomOnly =
     childArray.length === 1 &&
     typeof childArray[0] === "object" &&
     "props" in (childArray[0] as object) &&
-    // Mermaid renders a <figure>, so we check for it via displayName-style heuristic.
-    (childArray[0] as { type?: { name?: string } }).type?.name === "Mermaid";
+    (childName === "Mermaid" || childName === "CanvaEmbed");
 
-  if (isMermaidOnly) {
+  if (isCustomOnly) {
     return <>{children}</>;
   }
 
