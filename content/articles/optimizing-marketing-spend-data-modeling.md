@@ -68,5 +68,9 @@ Automating data extraction pipelines and deploying centralized visualization mod
 * **Cut Reporting Duration by 30%:** Automated Python extraction scripts and centralized Power BI and Tableau dashboards eliminated manual data preparation, enabling real time performance reviews.
 * **Increased Campaign ROI by 12%:** Swiftly identifying and stopping high cost per result campaigns allowed advertising capital to be reallocated directly into high converting channels.
 
+```canva
+DAHQzeIffe0/3Hitk3viAeM_-_Z36cA3Aw
+```
+
 ### Strategic Takeaway
 Data visualization is far more than presenting static numbers; it is about building automated systems that surface operational inefficiencies instantly. By pairing modern programming tools with clear decision frameworks, growth teams protect ad spend, accelerate decision speed, and systematically maximize return on investment.
