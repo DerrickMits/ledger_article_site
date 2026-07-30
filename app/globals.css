@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "katex/dist/katex.min.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -377,6 +378,29 @@ html {
 .article-prose .mermaid-svg-wrapper svg {
   max-width: 100%;
   height: auto;
+}
+
+/* KaTeX math blocks: center, give breathing room, and tone the color
+   slightly so the formulas feel integrated with the warm prose rather
+   than glowing against the cream background. */
+.article-prose .katex-display {
+  margin: 1.75rem 0;
+  padding: 1rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.article-prose .katex {
+  color: #1C1917;
+  font-size: 1.05em;
+}
+.dark .article-prose .katex {
+  color: #F5F5F4;
+}
+.article-prose .katex-display > .katex {
+  color: #1C1917;
+}
+.dark .article-prose .katex-display > .katex {
+  color: #F5F5F4;
 }
 
 /* Entrance animation utilities */
