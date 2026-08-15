@@ -47,7 +47,7 @@ export default function ToggleTheme() {
         onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
         aria-labelledby={`${id}-light ${id}-dark`}
         aria-label="Toggle between dark and light mode"
-        className="data-[state=checked]:bg-warm-900 data-[state=unchecked]:bg-warm-200"
+        className="inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent bg-warm-200 data-[state=checked]:bg-warm-900 data-[state=unchecked]:bg-warm-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
         style={{ transitionProperty: "background-color" }}
       >
         <Switch.Thumb className="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[checked]:translate-x-5 data-[unchecked]:translate-x-0" />
