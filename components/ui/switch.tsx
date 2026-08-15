@@ -11,3 +11,5 @@ export default function ExampleSwitch() {
     </Switch.Root>
   );
 }
+
+export default Switch;
