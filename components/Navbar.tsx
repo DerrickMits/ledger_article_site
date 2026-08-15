@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Feather } from "lucide-react";
-import ThemeToggle from "./ThemeToggle";
+import ToggleTheme from "./ToggleTheme";
 import { SITE } from "@/lib/site";
 
 /**
@@ -58,7 +58,7 @@ export default function Navbar() {
         </Link>
 
         {/* Theme toggle */}
-        <ThemeToggle />
+        <ToggleTheme />
       </nav>
     </header>
   );
