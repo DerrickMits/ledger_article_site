@@ -1,13 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils";
+
+function cn(...classes: (string | boolean | undefined | null)[]) {
+  return classes.filter(Boolean).join(" ");
+}
 
 const Switch = React.forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement> & { checked?: boolean }
 >(({ className, checked, ...props }, ref) => {
-  const id = React.useId();
   return (
     <button
       ref={ref}
