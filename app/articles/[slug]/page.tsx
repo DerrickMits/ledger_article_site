@@ -154,11 +154,11 @@ function ArticleContentWithTOC({
   headings: Array<{ slug: string; text: string; level: 2 | 3 }>;
 }) {
   return (
-    <div className="mx-auto max-w-6xl px-6 sm:px-8 mt-10">
+    <div className="mx-auto max-w-6xl px-6 sm:px-8 mt-16">
       <div className="relative flex gap-8">
         {/* Main article content */}
         <div className="flex-1">
-          <MobileTOC headings={headings} />
+          <MobileTOC headings={headings} className="mb-8" />
           <MarkdownContent content={content} headings={headings} />
         </div>
         
