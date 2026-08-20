@@ -71,7 +71,7 @@ export default function Navbar({ articles }: NavbarProps) {
                 strokeWidth={2}
               />
               <span className="hidden sm:inline">The Ledger</span>
-              <span className="sm:hidden text-base font-bold">L</span>
+              <span className="sm:hidden font-bold">Ledger</span>
             </Link>
           </div>
 
