@@ -5,6 +5,7 @@ import Providers from "./providers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { SITE } from "@/lib/site";
+import { getAllArticles } from "@/lib/articles";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -41,9 +42,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const articles = getAllArticles();
+
   return (
     <html
       lang="en"
@@ -52,7 +55,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen bg-cream dark:bg-deep text-warm-900 dark:text-warm-100 antialiased grain-bg">
         <Providers>
-          <Navbar />
+          <Navbar articles={articles} />
           <main className="pt-16">{children}</main>
           <Footer />
         </Providers>
