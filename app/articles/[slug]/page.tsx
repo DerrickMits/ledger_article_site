@@ -54,7 +54,7 @@ export default async function ArticlePage({
 
       <article className="pt-12 sm:pt-20">
         {/* ---------- Article header ---------- */}
-        <header className="mx-auto max-w-3xl px-6 sm:px-8 animate-fade-up">
+        <header className="mx-auto max-w-6xl px-6 sm:px-8 animate-fade-up">
           <Link
             href="/"
             className="group inline-flex items-center gap-2 text-sm font-medium text-warm-500 dark:text-warm-400 hover:text-warm-900 dark:hover:text-warm-100 transition-colors block w-fit"
@@ -112,7 +112,7 @@ export default async function ArticlePage({
         />
 
         {/* ---------- Closing call to action ---------- */}
-        <div className="mx-auto max-w-3xl px-6 sm:px-8 mt-20">
+        <div className="mx-auto max-w-6xl px-6 sm:px-8 mt-20">
           <div className="rounded-3xl bg-white dark:bg-warm-900 border border-warm-200 dark:border-warm-800 p-8 sm:p-10 text-center">
             <p className="font-display text-2xl sm:text-3xl font-bold text-warm-900 dark:text-warm-100">
               Keep the conversation going.
