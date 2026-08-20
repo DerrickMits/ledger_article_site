@@ -10,6 +10,7 @@ import {
 import { SITE } from "@/lib/site";
 import MarkdownContent from "@/components/MarkdownContent";
 import ReadingProgress from "@/components/ReadingProgress";
+import TableOfContents, { MobileTOC } from "@/components/TableOfContents";
 
 /** Pre-render every article so future drops ship as static files. */
 export function generateStaticParams() {
@@ -104,10 +105,11 @@ export default async function ArticlePage({
           </div>
         </header>
 
-        {/* ---------- Article body ---------- */}
-        <div className="mx-auto max-w-3xl px-6 sm:px-8 mt-10">
-          <MarkdownContent content={article.content} />
-        </div>
+        {/* ---------- Article body with TOC ---------- */}
+        <ArticleContentWithTOC 
+          content={article.content} 
+          headings={article.headings} 
+        />
 
         {/* ---------- Closing call to action ---------- */}
         <div className="mx-auto max-w-3xl px-6 sm:px-8 mt-20">
@@ -138,5 +140,35 @@ export default async function ArticlePage({
         </div>
       </article>
     </>
+  );
+}
+
+/**
+ * Client component that handles TOC rendering and scroll spy
+ */
+function ArticleContentWithTOC({
+  content,
+  headings,
+}: {
+  content: string;
+  headings: Array<{ slug: string; text: string; level: 2 | 3 }>;
+}) {
+  return (
+    <div className="mx-auto max-w-6xl px-6 sm:px-8 mt-10">
+      <div className="relative flex gap-8">
+        {/* Main article content */}
+        <div className="flex-1">
+          <MobileTOC headings={headings} />
+          <MarkdownContent content={content} headings={headings} />
+        </div>
+        
+        {/* Desktop TOC sidebar */}
+        <div className="hidden xl:block w-72 flex-shrink-0">
+          <div className="sticky top-24 h-max">
+            <TableOfContents headings={headings} />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

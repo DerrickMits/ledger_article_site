@@ -2,6 +2,23 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
+/**
+ * Generate a URL-safe slug from text.
+ * This function is duplicated in MarkdownContent.tsx to keep it pure.
+ */
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export interface HeadingItem {
+  slug: string;
+  text: string;
+  level: 2 | 3;
+}
+
 export interface Article {
   slug: string;
   title: string;
@@ -11,6 +28,7 @@ export interface Article {
   author: string;
   category: string;
   content: string;
+  headings: HeadingItem[];
 }
 
 export interface ArticleSummary {
@@ -24,6 +42,41 @@ export interface ArticleSummary {
 }
 
 const articlesDirectory = path.join(process.cwd(), "content", "articles");
+
+/**
+ * Extract headings from markdown content.
+ * Parses H2 and H3 tags and returns them as structured data.
+ */
+function extractHeadings(content: string): HeadingItem[] {
+  const headings: HeadingItem[] = [];
+  const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  
+  let match;
+  let seenKeys = new Set<string>();
+  
+  while ((match = headingRegex.exec(content)) !== null) {
+    const level = match[1].length as 2 | 3;
+    const text = match[2].trim();
+    const baseSlug = slugify(text);
+    
+    // Handle duplicate slugs by appending a number
+    let finalSlug = baseSlug;
+    let counter = 1;
+    while (seenKeys.has(finalSlug)) {
+      finalSlug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+    seenKeys.add(finalSlug);
+    
+    headings.push({
+      slug: finalSlug,
+      text,
+      level,
+    });
+  }
+  
+  return headings;
+}
 
 /** Read and parse a single markdown file into an Article. */
 function readArticle(fullPath: string, slug: string): Article | null {
@@ -41,6 +94,7 @@ function readArticle(fullPath: string, slug: string): Article | null {
     author: (data.author as string) ?? "Derrick Odiwuor",
     category: (data.category as string) ?? "",
     content,
+    headings: extractHeadings(content),
   };
 }
 
