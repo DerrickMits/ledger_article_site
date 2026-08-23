@@ -15,6 +15,11 @@ import { HeadingItem } from "@/lib/articles";
 const HeadingSlugsContext = React.createContext<Map<string, string>>(new Map());
 
 /**
+ * Context to provide section read times to child components.
+ */
+const SectionReadTimeContext = React.createContext<Map<string, number>>(new Map());
+
+/**
  * Extract text content from a React node (handles nested elements)
  */
 function extractTextFromNode(node: React.ReactNode): string {
@@ -71,18 +76,33 @@ export default function MarkdownContent({ content, headings = [] }: MarkdownCont
     return map;
   }, [headings]);
 
+  // Create a map of heading texts to their read times
+  const readTimeMap = React.useMemo(() => {
+    const map = new Map<string, number>();
+    headings.forEach((heading) => {
+      if (heading.readTime) {
+        map.set(heading.text, heading.readTime);
+      }
+    });
+    return map;
+  }, [headings]);
+
   return (
-    <HeadingSlugsContext.Provider value={headingSlugMap}>
-      <div className="article-prose">
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm, remarkMath]}
-          rehypePlugins={[rehypeKatex]}
-          components={components}
-        >
-          {content}
-        </ReactMarkdown>
-      </div>
-    </HeadingSlugsContext.Provider>
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <HeadingSlugsContext.Provider value={headingSlugMap}>
+        <SectionReadTimeContext.Provider value={readTimeMap}>
+          <div className="article-prose">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm, remarkMath]}
+              rehypePlugins={[rehypeKatex]}
+              components={components}
+            >
+              {content}
+            </ReactMarkdown>
+          </div>
+        </SectionReadTimeContext.Provider>
+      </HeadingSlugsContext.Provider>
+    </React.Suspense>
   );
 }
 
@@ -92,16 +112,20 @@ export default function MarkdownContent({ content, headings = [] }: MarkdownCont
 interface HeadingProps {
   node?: any;
   children?: React.ReactNode;
+  level?: number;
   [key: string]: any;
 }
 
 /**
- * H2 heading renderer - defined as a function with proper typing for react-markdown
+ * H2 heading renderer with optional read time badge
  */
 function Heading2({ children, ...props }: HeadingProps) {
   const slugMap = React.useContext(HeadingSlugsContext);
+  const readTimeMap = React.useContext(SectionReadTimeContext);
+  
   const headingText = extractTextFromNode(children).trim();
   const slug = slugMap.get(headingText) || slugify(headingText);
+  const readTime = readTimeMap.get(headingText);
   
   return (
     <h2
@@ -110,18 +134,26 @@ function Heading2({ children, ...props }: HeadingProps) {
       style={{ scrollMarginTop: "80px" }}
       {...props}
     >
-      {children}
+      <span>{children}</span>
+      {readTime && (
+        <span className="ml-2 text-xs text-warm-500 dark:text-warm-400 opacity-80">
+          {'·'} {readTime} min read
+        </span>
+      )}
     </h2>
   );
 }
 
 /**
- * H3 heading renderer - defined as a function with proper typing for react-markdown
+ * H3 heading renderer with optional read time badge
  */
 function Heading3({ children, ...props }: HeadingProps) {
   const slugMap = React.useContext(HeadingSlugsContext);
+  const readTimeMap = React.useContext(SectionReadTimeContext);
+  
   const headingText = extractTextFromNode(children).trim();
   const slug = slugMap.get(headingText) || slugify(headingText);
+  const readTime = readTimeMap.get(headingText);
   
   return (
     <h3
@@ -130,7 +162,12 @@ function Heading3({ children, ...props }: HeadingProps) {
       style={{ scrollMarginTop: "80px" }}
       {...props}
     >
-      {children}
+      <span>{children}</span>
+      {readTime && (
+        <span className="ml-2 text-xs text-warm-500 dark:text-warm-400 opacity-80">
+          {'·'} {readTime} min
+        </span>
+      )}
     </h3>
   );
 }
