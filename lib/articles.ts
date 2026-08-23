@@ -12,6 +12,13 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
+export interface ExecutiveSummaryData {
+  bottleneck: string;
+  fix: string;
+  outcome: string;
+  readTime?: number;
+}
+
 export interface HeadingItem {
   slug: string;
   text: string;
@@ -30,6 +37,7 @@ export interface Article {
   category: string;
   content: string;
   headings: HeadingItem[];
+  executiveSummary?: ExecutiveSummaryData;
 }
 
 export interface ArticleSummary {
@@ -153,6 +161,7 @@ function readArticle(fullPath: string, slug: string): Article | null {
     category: (data.category as string) ?? "",
     content,
     headings: extractHeadings(content),
+    executiveSummary: data.executiveSummary as ExecutiveSummaryData | undefined,
   };
 }
 
