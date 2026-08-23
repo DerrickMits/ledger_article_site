@@ -8,6 +8,8 @@ import rehypeKatex from "rehype-katex";
 import Mermaid from "./Mermaid";
 import CanvaEmbed from "./CanvaEmbed";
 import { HeadingItem } from "@/lib/articles";
+import { useTextSelection } from "@/hooks/useTextSelection";
+import QuoteSharePopover from "./QuoteSharePopover";
 
 /**
  * Context to provide server-generated heading slugs to child components.
@@ -87,11 +89,20 @@ export default function MarkdownContent({ content, headings = [] }: MarkdownCont
     return map;
   }, [headings]);
 
+  // Ref for the article content container — used to scope selection detection
+  const proseRef = React.useRef<HTMLDivElement>(null);
+
+  const { selection, isVisible, dismiss } = useTextSelection({
+    containerRef: proseRef,
+  });
+
+  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
+
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
       <HeadingSlugsContext.Provider value={headingSlugMap}>
         <SectionReadTimeContext.Provider value={readTimeMap}>
-          <div className="article-prose">
+          <div ref={proseRef} className="article-prose">
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkMath]}
               rehypePlugins={[rehypeKatex]}
@@ -100,6 +111,16 @@ export default function MarkdownContent({ content, headings = [] }: MarkdownCont
               {content}
             </ReactMarkdown>
           </div>
+
+          {/* Floating shareable-quote popover, rendered via portal to avoid overflow clipping */}
+          {isVisible && selection && (
+            <QuoteSharePopover
+              selectedText={selection.selectedText}
+              rect={selection.boundingRect}
+              currentUrl={currentUrl}
+              onDismiss={dismiss}
+            />
+          )}
         </SectionReadTimeContext.Provider>
       </HeadingSlugsContext.Provider>
     </React.Suspense>
