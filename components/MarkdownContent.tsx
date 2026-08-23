@@ -10,6 +10,8 @@ import CanvaEmbed from "./CanvaEmbed";
 import { HeadingItem } from "@/lib/articles";
 import { useTextSelection } from "@/hooks/useTextSelection";
 import QuoteSharePopover from "./QuoteSharePopover";
+import { GlossaryTermsHydrator } from "./GlossaryTerm";
+import rehypeGlossaryTerm from "@/lib/rehype-glossary-term";
 
 /**
  * Context to provide server-generated heading slugs to child components.
@@ -105,7 +107,7 @@ export default function MarkdownContent({ content, headings = [] }: MarkdownCont
           <div ref={proseRef} className="article-prose">
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkMath]}
-              rehypePlugins={[rehypeKatex]}
+              rehypePlugins={[rehypeKatex, rehypeGlossaryTerm]}
               components={components}
             >
               {content}
@@ -121,6 +123,9 @@ export default function MarkdownContent({ content, headings = [] }: MarkdownCont
               onDismiss={dismiss}
             />
           )}
+
+          {/* Glossary term tooltips — hydrate spans rendered by the rehype plugin */}
+          <GlossaryTermsHydrator proseRef={proseRef} />
         </SectionReadTimeContext.Provider>
       </HeadingSlugsContext.Provider>
     </React.Suspense>
