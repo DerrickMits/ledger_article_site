@@ -5,6 +5,11 @@ readTime: "10 min read"
 excerpt: "A step by step technical architecture guide to building, testing, and optimizing multi stage automation funnels, lead routing, and booking sequences in GoHighLevel."
 author: "Derrick Odiwuor"
 category: "Technical Guide"
+executiveSummary:
+  bottleneck: "Sales teams operating inside GoHighLevel revert to manual follow-ups and spreadsheet tracking because out-of-the-box pipelines lack trigger granularity, prospect routing logic, and booking sequence cadence — costing an estimated 15 hours per rep per week to unqualified lead activity."
+  fix: "Architected a multi-stage funnel with intelligent lead routing based on deal stage and source, built conditional branching workflows that trigger context-aware follow-up sequences, and designed automated booking cadences with fallback logic for no-shows, cold prospects, and warm SQL re-engagement."
+  outcome: "Reduced manual outreach time by 60%, improved qualified-lead-to-booking conversion by 28%, and built a self-governing pipeline that routes and nurtures leads without daily sales manager intervention."
+  readTime: 1
 ---
 
 # Streamlining Sales Automation: Building High Performance Workflows in GoHighLevel

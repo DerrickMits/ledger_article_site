@@ -11,6 +11,7 @@ import { SITE } from "@/lib/site";
 import MarkdownContent from "@/components/MarkdownContent";
 import ReadingProgress from "@/components/ReadingProgress";
 import TableOfContents, { MobileTOC } from "@/components/TableOfContents";
+import ExecutiveSummary from "@/components/ExecutiveSummary";
 
 /** Pre-render every article so future drops ship as static files. */
 export function generateStaticParams() {
@@ -104,6 +105,11 @@ export default async function ArticlePage({
             </span>
           </div>
         </header>
+
+        {/* ---------- Executive summary ---------- */}
+        <section className="mx-auto max-w-6xl px-6 sm:px-8 mt-12">
+          <ExecutiveSummary data={article.executiveSummary ?? null} defaultOpen />
+        </section>
 
         {/* ---------- Article body with TOC ---------- */}
         <ArticleContentWithTOC 

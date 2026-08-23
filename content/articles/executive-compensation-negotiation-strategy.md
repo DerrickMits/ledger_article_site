@@ -5,6 +5,11 @@ readTime: "10 min read"
 excerpt: "A tactical case study applying Chris Voss principles, the Ackerman bargaining model, and interest mapping to negotiate executive compensation packages successfully."
 author: "Derrick Odiwuor"
 category: "Case Study"
+executiveSummary:
+  bottleneck: "Executive compensation negotiations routinely stall because candidates rely on positional bargaining instead of calibrated questions — leading to anchored low offers, emotional escalation, and unspoken deal-breakers buried beneath formal numbers."
+  fix: "Applied Chris Voss's tactical empathy framework alongside the Ackerman bargaining method: calibrated openers, strategic labeling, mirrored questions to uncover true counterpart priorities, and a calibrated concession ladder that reshaped the negotiation around value — not position."
+  outcome: "Secured a compensation package above the original anchor by 18%, preserved the relationship through empathetic calibration, and established a repeatable negotiation playbook for future executive discussions."
+  readTime: 1
 ---
 
 # The Art of Strategic Negotiation: Securing Executive Compensation with Behavioral Science

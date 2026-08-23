@@ -5,6 +5,11 @@ readTime: "10 min read"
 excerpt: "A technical case study on building automated data pipelines, custom extraction models, and interactive dashboards to eliminate budget leaks and boost ad return on investment."
 author: "Derrick Odiwuor"
 category: "Case Study"
+executiveSummary:
+  bottleneck: "Manual, fragmented reporting across global markets masked true cost inefficiencies — campaigns appeared high-performing by reach but quietly leaked budget with no unified performance signal."
+  fix: "Built automated ETL pipelines, custom impression-to-conversion extraction models, and a real-time interactive dashboard that continuously isolates cost-per-click and cost-per-result ratios for every creative asset."
+  outcome: "Reporting turnaround cut by 85%, budget reallocated to highest-ROI channels, and ad fatigue detected before budget drain became irreversible."
+  readTime: 1
 ---
 
 # Optimizing Marketing Spend: How Automated Data Modeling Transformed Campaign ROI

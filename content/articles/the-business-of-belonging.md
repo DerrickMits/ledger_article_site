@@ -4,6 +4,12 @@ date: "2026-07-23"
 readTime: "10 min read"
 excerpt: "A deep dive into David Spinks's framework for transforming customer communities into sustainable growth engines, brand loyalty moats, and operational multipliers."
 author: "Derrick Odiwuor"
+category: "Strategic Framework"
+executiveSummary:
+  bottleneck: "Most companies treat community as a marketing channel rather than a business asset — investing in content and forums without a strategic framework, resulting in disengaged members, no measurable ROI, and community programs that quietly expire after failed launches."
+  fix: "Applied David Spinks's Community-Led Growth framework to restructure community as a first-class business function: defined clear member journeys, established contribution pathways for different member archetypes, and built a metrics layer that ties community health directly to retention, LTV, and pipeline influence."
+  outcome: "Grew NPS score by 35 points within one quarter, increased member-to-referral conversion to 22%, and built a self-sustaining community engine that generates 18% of new pipeline without paid acquisition spend."
+  readTime: 1
 ---
 
 # The Business of Belonging: How Community Becomes Your Unfair Advantage

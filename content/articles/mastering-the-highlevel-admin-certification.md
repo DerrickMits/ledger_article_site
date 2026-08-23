@@ -4,6 +4,12 @@ date: "2026-07-24"
 readTime: "10 min read"
 excerpt: "A comprehensive preparation guide to passing the live proctored GoHighLevel Certified Admin exam by mastering technical architecture, CRM pipelines, and automation logic."
 author: "Derrick Odiwuor"
+category: "Certification Guide"
+executiveSummary:
+  bottleneck: "Candidates approach the GoHighLevel Certified Admin exam with narrow, feature-level knowledge rather than integrated architectural understanding — leading to surprise failures on scenario-based questions that test pipeline design, automation logic, and sub-account configuration under real-world constraints."
+  fix: "Built a structured exam preparation framework covering the four high-weight domains — sub-account architecture, funnel and pipeline design, workflow automation logic, and troubleshooting — with hands-on lab exercises, scenario-based drills, and a systematic knowledge map that mirrors the exam blueprint's objective weightings."
+  outcome: "Achieved first-attempt pass with a score in the top 10 percentile, developed a reusable exam study system that maps each domain to lab-worthy practice scenarios, and documented the entire architecture knowledge base as a reference for future admins preparing for the same certification."
+  readTime: 1
 ---
 
 # Mastering the HighLevel Admin Certification: A Blueprint for Practical Excellence

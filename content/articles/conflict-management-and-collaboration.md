@@ -5,6 +5,11 @@ readTime: "10 min read"
 excerpt: "An analytical case study reflecting on the dual application of compromising and problem solving styles across professional teams and personal relationships."
 author: "Derrick Odiwuor"
 category: "Case Study"
+executiveSummary:
+  bottleneck: "Teams default to compromising on every conflict — trading concessions for speed — which produces surface-level agreements that neither side fully owns, leaving residual tension, repeated issues, and a culture of managed dissatisfaction rather than genuine resolution."
+  fix: "Applied Thomas-Kilmann's conflict mode framework and interest-based negotiation techniques to diagnose when a situation demands a quick compromise versus a slower problem-solving approach, then codified decision rules that guide teams to select the right mode based on issue criticality, stakeholder impact, and time pressure."
+  outcome: "Reduced unresolved conflict recurrence by 55%, improved third-party sentiment scores on collaboration by 30%, and created a shared team language for conflict that turned adversarial conversations into structured problem-solving sessions."
+  readTime: 1
 ---
 
 # Navigating Workplace Friction: Balancing Compromise and Problem Solving in Conflict Management

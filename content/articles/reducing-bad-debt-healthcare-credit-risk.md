@@ -5,6 +5,11 @@ readTime: "10 min read"
 excerpt: "A financial engineering case study on structuring compliance verification, debt service coverage models, and automated multi channel collection workflows to reduce credit default in healthcare."
 author: "Derrick Odiwuor"
 category: "Case Study"
+executiveSummary:
+  bottleneck: "Healthcare facilities with 120+ active accounts faced escalating bad debt due to fragmented onboarding, inconsistent compliance checks, and reactive recovery workflows that prioritized volume over verification."
+  fix: "Designed a structured compliance verification pipeline, debt service coverage scoring model, and automated multi-channel escalation workflows that aligned financial risk assessment with clinical service delivery."
+  outcome: "Reduced bad debt by 20% across the portfolio, standardized recovery timelines, and cut manual review hours by eliminating unqualified accounts before they reached collections."
+  readTime: 1
 ---
 
 # From Onboarding to Recovery: How We Reduced Bad Debt by 20% Across 120 Accounts

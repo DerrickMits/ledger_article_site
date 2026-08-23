@@ -5,6 +5,11 @@ readTime: "10 min read"
 excerpt: "A step by step technical guide to designing automated Zapier integrations that connect communication, calendar scheduling, and task management systems."
 author: "Derrick Odiwuor"
 category: "Technical Guide"
+executiveSummary:
+  bottleneck: "Teams acting as human routers between Gmail, Google Calendar, and Asana lost hours every week to manual data entry, missed follow-ups, and disconnected task status that required constant status-check meetings to resolve."
+  fix: "Engineered a series of Zapier automations that listen for incoming emails, parse scheduling signals, create calendar events, and sync task status across Gmail and Asana — replacing manual handoffs with event-driven workflows."
+  outcome: "Eliminated the manual routing layer, reduced follow-up latency from hours to minutes, and freed recurring meeting time by automating the status synchronization that previously required human coordination."
+  readTime: 1
 ---
 
 # Architecting Seamless Productivity: Building Zapier Automations Across Gmail, Google Calendar, and Asana

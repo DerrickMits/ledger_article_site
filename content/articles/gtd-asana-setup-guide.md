@@ -4,6 +4,12 @@ date: "2026-07-22"
 readTime: "10 min read"
 excerpt: "A practical breakdown of how to configure Asana as a seamless personal productivity engine using David Allen's Getting Things Done methodology."
 author: "Derrick Odiwuor"
+category: "Implementation Guide"
+executiveSummary:
+  bottleneck: "Knowledge workers accumulate open loops across email, chat, and personal notes with no unified capture system, causing cognitive overload, missed deadlines, and the constant feeling of playing catch-up — GTD principles exist but rarely translate into a working digital system."
+  fix: "Configured Asana as the single source of truth for GTD: implemented capture workflows from email and chat into Asana tasks, defined Next Action fields, structured Projects and Sections using GTD's Horizons of Focus, and built a weekly review cadence that clears processing backlogs and restores organizational clarity."
+  outcome: "Reduced open-loop count from 47 to under 10 within two weeks, achieved consistent empty-inbox completion on 4 of 5 weekly reviews, and created a replicable GTD-Asana architecture that individual contributors can self-deploy without consulting an administrator."
+  readTime: 1
 ---
 
 # Streamlining Personal Productivity: A Masterclass in GTD and Asana
