@@ -12,6 +12,8 @@ import MarkdownContent from "@/components/MarkdownContent";
 import ReadingProgress from "@/components/ReadingProgress";
 import TableOfContents, { MobileTOC } from "@/components/TableOfContents";
 import ExecutiveSummary from "@/components/ExecutiveSummary";
+import FocusModeControls from "@/components/FocusModeControls";
+import FocusModeToggle from "@/components/FocusModeToggle";
 
 /** Pre-render every article so future drops ship as static files. */
 export function generateStaticParams() {
@@ -88,6 +90,8 @@ export default async function ArticlePage({
               <User className="w-4 h-4" strokeWidth={1.8} />
               {article.author}
             </span>
+            {/* Focus mode toggle — client component */}
+            <FocusModeToggle />
           </div>
 
           <h1 className="font-display text-4xl sm:text-5xl md:text-[3.25rem] leading-[1.08] font-bold tracking-tight text-warm-900 dark:text-warm-100">
@@ -118,7 +122,7 @@ export default async function ArticlePage({
         />
 
         {/* ---------- Closing call to action ---------- */}
-        <div className="mx-auto max-w-6xl px-6 sm:px-8 mt-20">
+        <div className="article-cta-wrapper mx-auto max-w-6xl px-6 sm:px-8 mt-20">
           <div className="rounded-3xl bg-white dark:bg-warm-900 border border-warm-200 dark:border-warm-800 p-8 sm:p-10 text-center">
             <p className="font-display text-2xl sm:text-3xl font-bold text-warm-900 dark:text-warm-100">
               Keep the conversation going.

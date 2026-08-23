@@ -37,7 +37,7 @@ export default function TableOfContents({
 
   return (
     <aside
-      className={`hidden xl:block w-full max-w-xs bg-cream dark:bg-deep rounded-xl border border-warm-200 dark:border-warm-800 p-6 shadow-sm ${className}`}
+      className={`hidden xl:block w-full max-w-xs article-toc-sidebar bg-cream dark:bg-deep rounded-xl border border-warm-200 dark:border-warm-800 p-6 shadow-sm ${className}`}
       aria-label="Table of contents"
     >
       <nav className="space-y-2">

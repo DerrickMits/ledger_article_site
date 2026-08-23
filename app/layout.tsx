@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "./providers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { FocusModeProvider } from "@/hooks/useFocusMode";
 import { SITE } from "@/lib/site";
 import { getAllArticles } from "@/lib/articles";
 
@@ -54,11 +55,13 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-cream dark:bg-deep text-warm-900 dark:text-warm-100 antialiased grain-bg">
-        <Providers>
-          <Navbar articles={articles} />
-          <main className="pt-16">{children}</main>
-          <Footer />
-        </Providers>
+        <FocusModeProvider>
+          <Providers>
+            <Navbar articles={articles} />
+            <main className="pt-16">{children}</main>
+            <Footer />
+          </Providers>
+        </FocusModeProvider>
       </body>
     </html>
   );
