@@ -427,6 +427,20 @@ html {
 }
 
 /* ================================================================== */
+/*  Audio briefing waveform bars                                     */
+/* ================================================================== */
+
+/**
+ * Subtle scale animation for the waveform equalizer bars.
+ * Applied via `animation: audio-waveform-pulse 1.6s ease-in-out infinite;`
+ * plus a per-bar `animation-delay` to create a travelling-wave visual.
+ */
+@keyframes audio-waveform-pulse {
+  0%, 100% { transform: scaleY(0.45);  opacity: 0.55; }
+  50%      { transform: scaleY(1);     opacity: 1; }
+}
+
+/* ================================================================== */
 /*  FOCUS MODE                                                        */
 /* ================================================================== */
 

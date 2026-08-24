@@ -1,19 +1,18 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Clock, CalendarDays, User } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import {
   getAllSlugs,
   getArticleBySlug,
-  formatPublishDate,
 } from "@/lib/articles";
 import { SITE } from "@/lib/site";
 import MarkdownContent from "@/components/MarkdownContent";
 import ReadingProgress from "@/components/ReadingProgress";
 import TableOfContents, { MobileTOC } from "@/components/TableOfContents";
 import ExecutiveSummary from "@/components/ExecutiveSummary";
+import ArticleMetaRow from "@/components/ArticleMetaRow";
 import FocusModeControls from "@/components/FocusModeControls";
-import FocusModeToggle from "@/components/FocusModeToggle";
 
 /** Pre-render every article so future drops ship as static files. */
 export function generateStaticParams() {
@@ -77,26 +76,22 @@ export default async function ArticlePage({
             </div>
           )}
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-warm-500 dark:text-warm-400 mb-6">
-            <span className="inline-flex items-center gap-1.5">
-              <CalendarDays className="w-4 h-4" strokeWidth={1.8} />
-              {formatPublishDate(article.date) || article.date}
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Clock className="w-4 h-4" strokeWidth={1.8} />
-              {article.readTime}
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <User className="w-4 h-4" strokeWidth={1.8} />
-              {article.author}
-            </span>
-            {/* Focus mode toggle — client component */}
-            <FocusModeToggle />
-          </div>
+          {/* Meta row + Audio Briefing player — client component */}
+          <ArticleMetaRow
+            date={article.date}
+            readTime={article.readTime}
+            author={article.author}
+            category={article.category}
+            executiveSummary={article.executiveSummary ?? null}
+            content={article.content}
+          />
 
           <h1 className="font-display text-4xl sm:text-5xl md:text-[3.25rem] leading-[1.08] font-bold tracking-tight text-warm-900 dark:text-warm-100">
             {article.title}
           </h1>
+
+          {/* Floating focus-mode controls — portal-rendered, only visible in focus mode */}
+          <FocusModeControls />
 
           <p className="mt-6 text-xl leading-relaxed text-warm-600 dark:text-warm-400">
             {article.excerpt}
