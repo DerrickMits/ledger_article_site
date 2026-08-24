@@ -156,9 +156,7 @@ export default function ArticleMetaRow({
         <FocusModeToggle />
       </div>
 
-      {audio && (
-        <AudioBriefingPlayer audio={audio} className="mb-6" />
-      )}
+      <AudioBriefingPlayer audio={audio ?? null} className="mb-6" />
     </>
   );
 }
