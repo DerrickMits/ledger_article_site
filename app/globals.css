@@ -447,7 +447,7 @@ html {
 /* Smooth transitions for all focus-mode-driven layout changes         */
 body,
 body nav,
-body header,
+body > header,          /* Only the root-level Navbar <header> */
 body footer,
 body .article-toc-sidebar,
 body .article-cta-wrapper,
@@ -464,7 +464,7 @@ main {
 /* transition, but for now we accept a small shift since hidden */
 /* elements won't take space). */
 body.focus-mode nav,
-body.focus-mode header,
+body.focus-mode > header,   /* Navbar <header> only — not article <header> */
 body.focus-mode footer,
 body.focus-mode .article-toc-sidebar,
 body.focus-mode .article-cta-wrapper {
