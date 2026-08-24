@@ -379,7 +379,9 @@ async function main(): Promise<void> {
     const merged: Record<string, ManifestEntry> = { ...(existingManifest?.entries ?? {}) };
     for (const e of newEntries) merged[e.slug] = e;
     for (const [slug, entry] of Object.entries(merged)) {
-      const p = path.join(PROJECT_ROOT, entry.url.replace(/^\//, ""));
+      // URL is public-relative (e.g. /audio/briefings/x.mp3);
+      // resolve through PUBLIC_DIR on disk.
+      const p = path.join(PUBLIC_DIR, entry.url.replace(/^\//, ""));
       if (!fs.existsSync(p) || fs.statSync(p).size === 0) delete merged[slug];
     }
     writeManifest(merged);

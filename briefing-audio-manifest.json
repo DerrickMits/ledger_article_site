@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-24T18:43:21.262Z",
+  "engine": "elevenlabs",
+  "modelSize": "eleven_multilingual_v2",
+  "entries": {
+    "ai-prompting-and-task-clarification-sop": {
+      "slug": "ai-prompting-and-task-clarification-sop",
+      "url": "/audio/briefings/ai-prompting-and-task-clarification-sop.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 837519,
+      "generatedAt": "2026-08-24T18:43:21.260Z",
+      "mimeType": "audio/mpeg"
+    },
+    "become-a-super-salesforce-administrator": {
+      "slug": "become-a-super-salesforce-administrator",
+      "url": "/audio/briefings/become-a-super-salesforce-administrator.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 844207,
+      "generatedAt": "2026-08-24T18:43:21.261Z",
+      "mimeType": "audio/mpeg"
+    },
+    "conflict-management-and-collaboration": {
+      "slug": "conflict-management-and-collaboration",
+      "url": "/audio/briefings/conflict-management-and-collaboration.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 985477,
+      "generatedAt": "2026-08-24T18:43:21.261Z",
+      "mimeType": "audio/mpeg"
+    },
+    "daily-planning-and-triage-sop": {
+      "slug": "daily-planning-and-triage-sop",
+      "url": "/audio/briefings/daily-planning-and-triage-sop.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 903557,
+      "generatedAt": "2026-08-24T18:43:21.261Z",
+      "mimeType": "audio/mpeg"
+    },
+    "executive-compensation-negotiation-strategy": {
+      "slug": "executive-compensation-negotiation-strategy",
+      "url": "/audio/briefings/executive-compensation-negotiation-strategy.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 935740,
+      "generatedAt": "2026-08-24T18:43:21.261Z",
+      "mimeType": "audio/mpeg"
+    },
+    "gtd-asana-setup-guide": {
+      "slug": "gtd-asana-setup-guide",
+      "url": "/audio/briefings/gtd-asana-setup-guide.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 1042737,
+      "generatedAt": "2026-08-24T18:43:21.261Z",
+      "mimeType": "audio/mpeg"
+    },
+    "high-performance-gohighlevel-workflows": {
+      "slug": "high-performance-gohighlevel-workflows",
+      "url": "/audio/briefings/high-performance-gohighlevel-workflows.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 947443,
+      "generatedAt": "2026-08-24T18:43:21.261Z",
+      "mimeType": "audio/mpeg"
+    },
+    "hydration-drink-market-entry-strategy": {
+      "slug": "hydration-drink-market-entry-strategy",
+      "url": "/audio/briefings/hydration-drink-market-entry-strategy.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 949114,
+      "generatedAt": "2026-08-24T18:43:21.262Z",
+      "mimeType": "audio/mpeg"
+    },
+    "interpersonal-growth-and-relational-thriving": {
+      "slug": "interpersonal-growth-and-relational-thriving",
+      "url": "/audio/briefings/interpersonal-growth-and-relational-thriving.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 1065725,
+      "generatedAt": "2026-08-24T18:43:21.262Z",
+      "mimeType": "audio/mpeg"
+    },
+    "mastering-the-highlevel-admin-certification": {
+      "slug": "mastering-the-highlevel-admin-certification",
+      "url": "/audio/briefings/mastering-the-highlevel-admin-certification.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 1023929,
+      "generatedAt": "2026-08-24T18:43:21.262Z",
+      "mimeType": "audio/mpeg"
+    },
+    "optimizing-marketing-spend-data-modeling": {
+      "slug": "optimizing-marketing-spend-data-modeling",
+      "url": "/audio/briefings/optimizing-marketing-spend-data-modeling.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 757271,
+      "generatedAt": "2026-08-24T18:43:21.262Z",
+      "mimeType": "audio/mpeg"
+    },
+    "reducing-bad-debt-healthcare-credit-risk": {
+      "slug": "reducing-bad-debt-healthcare-credit-risk",
+      "url": "/audio/briefings/reducing-bad-debt-healthcare-credit-risk.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 749330,
+      "generatedAt": "2026-08-24T18:43:21.262Z",
+      "mimeType": "audio/mpeg"
+    },
+    "social-identity-and-communication": {
+      "slug": "social-identity-and-communication",
+      "url": "/audio/briefings/social-identity-and-communication.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 1066979,
+      "generatedAt": "2026-08-24T18:43:21.262Z",
+      "mimeType": "audio/mpeg"
+    },
+    "the-business-of-belonging": {
+      "slug": "the-business-of-belonging",
+      "url": "/audio/briefings/the-business-of-belonging.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 943263,
+      "generatedAt": "2026-08-24T18:43:21.262Z",
+      "mimeType": "audio/mpeg"
+    },
+    "zapier-workflow-automation-guide": {
+      "slug": "zapier-workflow-automation-guide",
+      "url": "/audio/briefings/zapier-workflow-automation-guide.mp3",
+      "durationSeconds": 2.31,
+      "voiceProfile": "HKFOb9iktHA85uKXydRT",
+      "byteSize": 787782,
+      "generatedAt": "2026-08-24T18:43:21.262Z",
+      "mimeType": "audio/mpeg"
+    }
+  }
+}
