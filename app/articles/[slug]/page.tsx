@@ -76,7 +76,7 @@ export default async function ArticlePage({
             </div>
           )}
 
-          {/* Meta row + Audio Briefing player — client component */}
+          {/* Meta row + Audio Briefing player — pre-rendered AI voice audio */}
           <ArticleMetaRow
             date={article.date}
             readTime={article.readTime}
@@ -84,6 +84,7 @@ export default async function ArticlePage({
             category={article.category}
             executiveSummary={article.executiveSummary ?? null}
             content={article.content}
+            audio={article.audio ?? null}
           />
 
           <h1 className="font-display text-4xl sm:text-5xl md:text-[3.25rem] leading-[1.08] font-bold tracking-tight text-warm-900 dark:text-warm-100">

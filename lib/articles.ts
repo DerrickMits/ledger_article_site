@@ -1,16 +1,13 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+import { 
+  loadBriefingAudioManifest 
+} from "./briefing-audio";
 
-/**
- * Generate a URL-safe slug from text.
- */
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
+/* ------------------------------------------------------------------ */
+/*  Types                                                             */
+/* ------------------------------------------------------------------ */
 
 export interface ExecutiveSummaryData {
   bottleneck: string;
@@ -23,8 +20,31 @@ export interface HeadingItem {
   slug: string;
   text: string;
   level: 2 | 3;
-  /** Estimated read time for this specific section in minutes */
   readTime?: number;
+}
+
+/**
+ * Metadata describing the pre-generated AI audio file attached to an article's
+ * executive-summary briefing. Populated at build time by:
+ *   scripts/generate-briefing-audio.ts
+ *
+ * We store the data in a separate sidecar manifest rather than mutating
+ * article frontmatter so the markdown source files stay clean, and so that
+ * the manifest can be regenerated independently without touching the CMS.
+ */
+export interface BriefingAudio {
+  /** Absolute (or site-rooted) URL to the served audio asset. */
+  url: string;
+  /** Duration in seconds, as reported by Voicebox at generation time. */
+  durationSeconds: number;
+  /** Voice-profile name used during synthesis (informational). */
+  voiceProfile: string;
+  /** File size in bytes. */
+  byteSize: number;
+  /** ISO-8601 timestamp of when this file was generated. */
+  generatedAt: string;
+  /** MIME type of the generated file, typically "audio/wav". */
+  mimeType: string;
 }
 
 export interface Article {
@@ -38,6 +58,9 @@ export interface Article {
   content: string;
   headings: HeadingItem[];
   executiveSummary?: ExecutiveSummaryData;
+  /** Attached pre-generated briefing audio, populated at build time by the
+   *  generation script and stored in the sidecar manifest. */
+  audio?: BriefingAudio | null;
 }
 
 export interface ArticleSummary {
@@ -53,61 +76,66 @@ export interface ArticleSummary {
 const articlesDirectory = path.join(process.cwd(), "content", "articles");
 
 /**
- * Calculate word count from text
+ * Derive the briefings-manifest path. The manifest is written to the repo
+ * root by scripts/generate-briefing-audio.ts so it must be git-tracked and
+ * therefore resolvable from process.cwd().
  */
+const manifestPath = path.join(process.cwd(), "briefing-audio-manifest.json");
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 function getWordCount(text: string): number {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
-/**
- * Calculate reading time in minutes (using 200 words per minute)
- */
 function getReadTimeMinutes(wordCount: number): number {
   return Math.ceil(wordCount / 200);
 }
 
-/**
- * Strip markdown syntax for accurate word counting
- */
 function stripMarkdown(markdown: string): string {
   return markdown
-    .replace(/```[\s\S]*?```/g, "") // Remove code blocks
-    .replace(/!\[.*?\]\(.*?\)/g, "") // Remove images
-    .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1") // Keep link text
-    .replace(/#{1,6}\s+/g, "") // Remove heading markers
-    .replace(/\|[^\n]*\|/g, "") // Remove table cells
-    .replace(/```/g, "") // Remove code fence markers
-    .replace(/`/g, "") // Remove inline code markers
-    .replace(/>\s+/g, "") // Remove blockquote markers
-    .replace(/[*_]{1,3}\s*/g, "") // Remove list markers
-    .replace(/\*\*|\*|__|_/g, "") // Remove bold/italic markers
-    .replace(/\s+/g, " ") // Normalize whitespace
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/!\[.*?\]\(.*?\)/g, "")
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1")
+    .replace(/#{1,6}\s+/g, "")
+    .replace(/\|[^\n]*\|/g, "")
+    .replace(/```/g, "")
+    .replace(/`/g, "")
+    .replace(/>\s+/g, "")
+    .replace(/[*_]{1,3}\s*/g, "")
+    .replace(/\*\*|\*|__|_/g, "")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
-/**
- * Extract headings from markdown content and calculate section read times
- */
+/* ------------------------------------------------------------------ */
+/*  Heading extraction                                                */
+/* ------------------------------------------------------------------ */
+
 function extractHeadings(content: string): HeadingItem[] {
   const headings: HeadingItem[] = [];
   const seenKeys = new Set<string>();
-  
-  // Find all heading positions
+
   const headingPattern = /^(#{2,3})\s+(.+)$/gm;
   const headingMatches: { level: 2 | 3; text: string; start: number; end: number }[] = [];
-  
+
   let match;
   while ((match = headingPattern.exec(content)) !== null) {
     const level = match[1].length as 2 | 3;
     const text = match[2].trim();
-    const start = match.index;
-    const end = match.index + match[0].length;
-    headingMatches.push({ level, text, start, end });
+    headingMatches.push({ level, text, start: match.index, end: match.index + match[0].length });
   }
-  
-  // Calculate read time for each section
+
   headingMatches.forEach((heading, index) => {
-    // Skip duplicates
     const baseSlug = slugify(heading.text);
     let finalSlug = baseSlug;
     let counter = 1;
@@ -116,42 +144,34 @@ function extractHeadings(content: string): HeadingItem[] {
       counter++;
     }
     seenKeys.add(finalSlug);
-    
-    // Get content for this section
+
     let sectionContent = "";
     if (index < headingMatches.length - 1) {
-      const nextHeading = headingMatches[index + 1];
-      sectionContent = content.substring(heading.end, nextHeading.start);
+      sectionContent = content.substring(heading.end, headingMatches[index + 1].start);
     } else {
       sectionContent = content.substring(heading.end);
     }
-    
-    // Calculate word count and read time for this section
+
     const cleanContent = stripMarkdown(sectionContent);
-    const wordCount = getWordCount(cleanContent);
-    const readTime = getReadTimeMinutes(wordCount);
-    
-    headings.push({
-      slug: finalSlug,
-      text: heading.text,
-      level: heading.level,
-      readTime,
-    });
+    const readTime = getReadTimeMinutes(getWordCount(cleanContent));
+
+    headings.push({ slug: finalSlug, text: heading.text, level: heading.level, readTime });
   });
-  
+
   return headings;
 }
 
-/**
- * Read and parse a single markdown file into an Article.
- */
+/* ------------------------------------------------------------------ */
+/*  Article loading — wired to briefing manifest                      */
+/* ------------------------------------------------------------------ */
+
 function readArticle(fullPath: string, slug: string): Article | null {
   if (!fs.existsSync(fullPath)) return null;
 
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
-  return {
+  const article: Article = {
     slug,
     title: (data.title as string) ?? slug,
     date: (data.date as string) ?? "",
@@ -162,12 +182,34 @@ function readArticle(fullPath: string, slug: string): Article | null {
     content,
     headings: extractHeadings(content),
     executiveSummary: data.executiveSummary as ExecutiveSummaryData | undefined,
+    audio: null, // populated below after manifest load
   };
+
+  // Attach sidecar audio record if the manifest contains a match for this slug
+  try {
+    const manifest = loadBriefingAudioManifest(manifestPath);
+    const entry = manifest.entries[slug];
+    if (entry) {
+      article.audio = {
+        url: entry.url,
+        durationSeconds: entry.durationSeconds,
+        voiceProfile: entry.voiceProfile,
+        byteSize: entry.byteSize,
+        generatedAt: entry.generatedAt,
+        mimeType: entry.mimeType,
+      };
+    }
+  } catch {
+    // Non-fatal: audio feature degrades gracefully when no manifest present
+  }
+
+  return article;
 }
 
-/**
- * Return a stable list of publishable articles, newest first.
- */
+/* ------------------------------------------------------------------ */
+/*  Public API                                                        */
+/* ------------------------------------------------------------------ */
+
 export function getAllArticles(): ArticleSummary[] {
   if (!fs.existsSync(articlesDirectory)) return [];
 
@@ -178,16 +220,16 @@ export function getAllArticles(): ArticleSummary[] {
   const summaries = fileNames.map((fileName) => {
     const slug = fileName.replace(/\.md$/, "");
     const article = readArticle(path.join(articlesDirectory, fileName), slug);
-    const summary = article ? {
-      slug,
+    if (!article) return null;
+    return {
+      slug: article.slug,
       title: article.title,
       date: article.date,
       readTime: article.readTime,
       excerpt: article.excerpt,
       author: article.author,
       category: article.category,
-    } : null;
-    return summary;
+    };
   });
 
   return summaries
@@ -195,28 +237,18 @@ export function getAllArticles(): ArticleSummary[] {
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-/**
- * Fetch a single article by its slug.
- */
 export function getArticleBySlug(slug: string): Article | null {
   return readArticle(path.join(articlesDirectory, `${slug}.md`), slug);
 }
 
-/**
- * Provide slugs to Next.js for static pre-rendering.
- */
 export function getAllSlugs(): string[] {
   if (!fs.existsSync(articlesDirectory)) return [];
-
   return fs
     .readdirSync(articlesDirectory)
     .filter((name) => name.endsWith(".md"))
     .map((name) => name.replace(/\.md$/, ""));
 }
 
-/**
- * Format an HTML date string to a human readable format.
- */
 export function formatPublishDate(iso: string): string {
   if (!iso) return "";
   const date = new Date(iso);
@@ -228,24 +260,10 @@ export function formatPublishDate(iso: string): string {
   });
 }
 
-/**
- * Calculate reading time for a text string
- * @param text - Text to calculate reading time for
- * @param wordsPerMinute - Reading speed (default: 200)
- * @returns Reading time in minutes
- */
 export function calculateReadingTime(text: string, wordsPerMinute = 200): number {
-  const cleanText = stripMarkdown(text);
-  const wordCount = getWordCount(cleanText);
-  return getReadTimeMinutes(wordCount);
+  return Math.ceil(getWordCount(stripMarkdown(text)) / wordsPerMinute);
 }
 
-/**
- * Calculate word count from markdown content (removing markdown syntax)
- * @param content - Markdown content
- * @returns Word count
- */
 export function calculateWordCount(content: string): number {
-  const cleanContent = stripMarkdown(content);
-  return getWordCount(cleanContent);
+  return getWordCount(stripMarkdown(content));
 }

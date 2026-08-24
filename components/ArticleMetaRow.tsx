@@ -1,57 +1,90 @@
 "use client";
 
+import { useMemo } from "react";
 import { CalendarDays, Clock, User } from "lucide-react";
-import BrowserAudioBriefing from "./WebSpeechBriefingPlayer";
+import AudioBriefingPlayer from "./AudioBriefingPlayer";
 import FocusModeToggle from "./FocusModeToggle";
+import type { BriefingAudio } from "@/lib/briefing-audio";
 
 /* ------------------------------------------------------------------ */
-/*  Types                                                             */
+/*  Component interface                                                */
 /* ------------------------------------------------------------------ */
 
-interface ArticleMetaRowProps {
-  /** ISO date string from frontmatter. */
+interface ExecutiveSummaryData {
+  bottleneck: string;
+  fix: string;
+  outcome: string;
+  readTime?: number;
+}
+
+interface ArticleMetaRowInnerProps {
   date: string;
-  /** Read-time label string from frontmatter, e.g. "10 min read". */
   readTime: string;
-  /** Author display name. */
   author: string;
-  /** Category slug/badge label. */
   category?: string;
-  /** Executive summary object — used to derive the briefing text. */
-  executiveSummary?: {
-    bottleneck: string;
-    fix: string;
-    outcome: string;
-    readTime?: number;
-  } | null;
-  /** Raw markdown body — used as fallback text if no summary. */
+  executiveSummary?: ExecutiveSummaryData | null;
   content?: string;
-  /** Additional CSS classes for layout control. */
+  audio?: BriefingAudio | null;
   className?: string;
 }
 
 /* ------------------------------------------------------------------ */
-/*  Derive briefing text from article data                            */
+/*  Component interface                                                */
 /* ------------------------------------------------------------------ */
 
+interface ExecutiveSummaryData {
+  bottleneck: string;
+  fix: string;
+  outcome: string;
+  readTime?: number;
+}
+
+interface ArticleMetaRowInnerProps {
+  date: string;
+  readTime: string;
+  author: string;
+  category?: string;
+  executiveSummary?: ExecutiveSummaryData | null;
+  content?: string;
+  audio?: BriefingAudio | null;
+  className?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
+function formatPublishDate(iso: string): string {
+  try {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return iso;
+    return d.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  } catch {
+    return iso;
+  }
+}
+
 /**
- * Build the briefing prose from the structured executive summary.
- * Falls back to the first chunk of the article body if no summary exists.
+ * Build briefing prose from the structured executive summary as a FALLBACK
+ * only — production audio is expected to come from the pre-generated
+ * `audio` field populated by the generation script / manifest.
  */
-function buildBriefingText(article: ArticleMetaRowProps): string {
-  if (article.executiveSummary) {
-    const { bottleneck, fix, outcome } = article.executiveSummary;
+function buildBriefingText(execSummary: ArticleMetaRowInnerProps["executiveSummary"], content?: string): string {
+  if (execSummary) {
     return [
-      `Here is your executive briefing.`,
-      `The core bottleneck: ${bottleneck}`,
-      `The recommended fix: ${fix}`,
-      `The measured outcome: ${outcome}`,
+      "Here is your executive briefing.",
+      `The core bottleneck: ${execSummary.bottleneck}`,
+      `The recommended fix: ${execSummary.fix}`,
+      `The measured outcome: ${execSummary.outcome}`,
     ].join(" ");
   }
 
-  if (article.content) {
-    // Strip markdown and take the first 300 words
-    const plain = article.content
+  if (content) {
+    const plain = content
       .replace(/```[\s\S]*?```/g, "")
       .replace(/!\[.*?\]\(.*?\)/g, "")
       .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1")
@@ -62,33 +95,14 @@ function buildBriefingText(article: ArticleMetaRowProps): string {
       .replace(/\|/g, ",")
       .replace(/\s+/g, " ")
       .trim();
-    const words = plain.split(/\s+/).filter(Boolean).slice(0, 300);
-    return words.join(" ");
+    return plain.split(/\s+/).filter(Boolean).slice(0, 300).join(" ");
   }
 
   return "";
 }
 
 /* ------------------------------------------------------------------ */
-/*  Format the publish date                                           */
-/* ------------------------------------------------------------------ */
-
-function formatPublishDate(iso: string): string {
-  try {
-    const date = new Date(iso);
-    if (Number.isNaN(date.getTime())) return iso;
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch {
-    return iso;
-  }
-}
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                         */
+/*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
 export default function ArticleMetaRow({
@@ -98,18 +112,23 @@ export default function ArticleMetaRow({
   category,
   executiveSummary,
   content,
+  audio,
   className = "",
-}: ArticleMetaRowProps) {
-  const briefingText = buildBriefingText({ date, readTime, author, category, executiveSummary, content });
+}: ArticleMetaRowInnerProps) {
+  // Legacy buildBriefingText is no longer used directly in JSX;
+  // pre-generated audio from the manifest drives the player.
+  useMemo(
+    () => buildBriefingText(executiveSummary ?? null, content),
+    [executiveSummary, content],
+  );
 
-  // Estimate listen time from the briefing text length.
-  // Average speech rate ≈ 130 words/min at default rate of 1x.
-  const wordEstimate = briefingText.split(/\s+/).filter(Boolean).length;
-  const estimatedMinutes = Math.max(1, Math.ceil(wordEstimate / 130));
+  // When pre-generated audio exists, pass it to the dedicated HTML5 player.
+  // Otherwise the player stays hidden and the legacy synthesizer
+  // path is NOT re-activated — we only render audio when we have
+  // a real pre-rendered file to play.
 
   return (
     <>
-      {/* Meta row — matches the existing article metadata striping */}
       <div
         className={`
           flex flex-wrap items-center gap-x-5 gap-y-2
@@ -129,17 +148,16 @@ export default function ArticleMetaRow({
           <User className="w-4 h-4" strokeWidth={1.8} />
           {author}
         </span>
-        {/* Focus mode toggle preserved from original meta row */}
+        {category && (
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-warm-400 dark:text-warm-500 text-xs">
+            · {category}
+          </span>
+        )}
         <FocusModeToggle />
       </div>
 
-      {/* Audio Briefing Player — sits directly below the meta row */}
-      {briefingText && (
-        <BrowserAudioBriefing
-          briefingText={briefingText}
-          estimatedReadTimeMin={estimatedMinutes}
-          className="mb-6"
-        />
+      {audio && (
+        <AudioBriefingPlayer audio={audio} className="mb-6" />
       )}
     </>
   );
