@@ -13,7 +13,7 @@ const SPEED_LABELS: Record<number, string> = { 1: "1x", 1.25: "1.25x", 1.5: "1.5
 
 interface AudioBriefingPlayerProps {
   /** Briefing audio metadata loaded from the sidecar manifest. */
-  audio: BriefingAudio;
+  audio?: BriefingAudio | null;
   /** Human-readable article title for aria-labels. */
   articleTitle?: string;
   /** Extra CSS classes for layout. */
@@ -156,13 +156,52 @@ export default function AudioBriefingPlayer({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(audio.durationSeconds);
+  const [duration, setDuration] = useState(audio?.durationSeconds ?? 0);
   const [rate, setRate] = useState(1);
   const [hasInteracted, setHasInteracted] = useState(false);
 
   /* Derive if the component has real audio content
      (treats zero or missing duration as absent content). */
-  const hasAudio = duration > 0 && audio.url.length > 0;
+  const audioUrl = audio?.url ?? "";
+  const hasAudio = duration > 0 && audioUrl.length > 0;
+
+  /* ---- Placeholder: no audio generated yet ---- */
+
+  if (!hasAudio) {
+    return (
+      <div
+        className={`
+          flex flex-wrap items-center gap-y-2 gap-x-4
+          rounded-xl
+          border border-warm-200/60 dark:border-warm-800/60
+          bg-warm-50/50 dark:bg-warm-900/25
+          backdrop-blur-sm
+          px-4 py-2.5
+          ${className}
+        `}
+      role="region"
+        aria-label="Audio briefing — coming soon"
+      >
+        <div
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-warm-200 dark:bg-warm-800 text-warm-400 dark:text-warm-600 shrink-0"
+          aria-hidden="true"
+        >
+          <Play className="w-4 h-4" strokeWidth={2} style={{marginLeft: 2}} />
+        </div>
+        <div className="flex-1 min-w-[10rem]">
+          <span className="text-sm font-semibold text-warm-600 dark:text-warm-500 block">Audio Briefing</span>
+          <span className="text-[11px] text-warm-400 dark:text-warm-600 block mt-0.5">AI-generated voice audio coming soon</span>
+        </div>
+        <div className="flex items-center gap-1 shrink-0 opacity-40" aria-hidden="true">
+          {[1,1.25,1.5,2].map((r) => (
+            <span key={r} className="min-w-[2.2rem] h-7 px-1.5 rounded-md text-[11px] font-bold tabular-nums select-none">
+              {r === 1 ? '1x' : r === 1.25 ? '1.25x' : r === 1.5 ? '1.5x' : '2x'}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   /* ---- Effect: sync audio ref ---- */
 
@@ -277,7 +316,7 @@ export default function AudioBriefingPlayer({
       {hasAudio && (
         <audio
           ref={audioRef}
-          src={audio.url}
+          src={audioUrl}
           preload="metadata"
           onPlay={onAudioPlay}
           onPause={onAudioPause}
