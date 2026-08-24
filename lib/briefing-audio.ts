@@ -186,7 +186,7 @@ export function loadBriefingAudioManifest(filePath: string): BriefingAudioManife
     return {
       version: 1,
       generatedAt: new Date().toISOString(),
-      engine: "qwen",
+      engine: "elevenlabs",
       entries: {},
     };
   }
@@ -201,12 +201,12 @@ export function loadBriefingAudioManifest(filePath: string): BriefingAudioManife
 
     const top = validateTopLevel(parsed as Record<string, unknown>);
     if (!top) {
-      return { version: 1, generatedAt: new Date().toISOString(), engine: "qwen", entries: {} };
+      return { version: 1, generatedAt: new Date().toISOString(), engine: "elevenlabs", entries: {} };
     }
 
     const entries = validateEntries(parsed);
     if (!entries) {
-      return { version: 1, generatedAt: new Date().toISOString(), engine: "qwen", entries: {} };
+      return { version: 1, generatedAt: new Date().toISOString(), engine: "elevenlabs", entries: {} };
     }
 
     return {
@@ -221,7 +221,7 @@ export function loadBriefingAudioManifest(filePath: string): BriefingAudioManife
     return {
       version: 1,
       generatedAt: new Date().toISOString(),
-      engine: "qwen",
+      engine: "elevenlabs",
       entries: {},
     };
   }
