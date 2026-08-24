@@ -12,7 +12,6 @@ import ReadingProgress from "@/components/ReadingProgress";
 import TableOfContents, { MobileTOC } from "@/components/TableOfContents";
 import ExecutiveSummary from "@/components/ExecutiveSummary";
 import ArticleMetaRow from "@/components/ArticleMetaRow";
-import FocusModeControls from "@/components/FocusModeControls";
 
 /** Pre-render every article so future drops ship as static files. */
 export function generateStaticParams() {
@@ -92,7 +91,6 @@ export default async function ArticlePage({
           </h1>
 
           {/* Floating focus-mode controls — portal-rendered, only visible in focus mode */}
-          <FocusModeControls />
 
           <p className="mt-6 text-xl leading-relaxed text-warm-600 dark:text-warm-400">
             {article.excerpt}

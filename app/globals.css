@@ -440,50 +440,6 @@ html {
   50%      { transform: scaleY(1);     opacity: 1; }
 }
 
-/* ================================================================== */
-/*  FOCUS MODE                                                        */
-/* ================================================================== */
-
-/* Smooth transitions for all focus-mode-driven layout changes         */
-body,
-body nav,
-body > header,          /* Only the root-level Navbar <header> */
-body footer,
-body .article-toc-sidebar,
-body .article-cta-wrapper,
-main {
-  transition:
-    opacity 300ms ease-in-out,
-    transform 300ms ease-in-out,
-    max-width 300ms ease-in-out,
-    padding 300ms ease-in-out;
-}
-
-/* When focus mode is active, hide chrome with opacity so elements */
-/* still occupy their rendered space (no layout jump before the */
-/* transition, but for now we accept a small shift since hidden */
-/* elements won't take space). */
-body.focus-mode nav,
-body.focus-mode > header,   /* Navbar <header> only — not article <header> */
-body.focus-mode footer,
-body.focus-mode .article-toc-sidebar,
-body.focus-mode .article-cta-wrapper {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Focus mode content area — inject a bit more vertical rhythm */
-body.focus-mode .article-prose {
-  padding-top: 2rem;
-  padding-bottom: 4rem;
-}
-
-/* Ensure floating controls are never dimmed by the above rule */
-body.focus-mode [data-focus-controls] {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  transition: opacity 300ms ease-in-out !important;
-}
 
 /* ===========================================
    Table of Contents component styles

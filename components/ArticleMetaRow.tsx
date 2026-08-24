@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 import { CalendarDays, Clock, User } from "lucide-react";
 import AudioBriefingPlayer from "./AudioBriefingPlayer";
-import FocusModeToggle from "./FocusModeToggle";
 import type { BriefingAudio } from "@/lib/briefing-audio";
 
 /* ------------------------------------------------------------------ */
@@ -153,7 +152,6 @@ export default function ArticleMetaRow({
             · {category}
           </span>
         )}
-        <FocusModeToggle />
       </div>
 
       <AudioBriefingPlayer audio={audio ?? null} className="mb-6" />
