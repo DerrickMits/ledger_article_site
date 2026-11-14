@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { ArticleSummary, formatPublishDate } from "@/lib/client/articles";
 
 /* ------------------------------------------------------------------ */
@@ -76,7 +76,6 @@ function RecommendationCard({
       {/* Badge */}
       <div className="mb-4">
         <span className={getBadgeStyle(recommendation.badge)}>
-          <Sparkles className="w-3 h-3 mr-1.5" strokeWidth={2} />
           {recommendation.badge}
         </span>
       </div>
@@ -173,8 +172,7 @@ export default function ReadNextSection({ currentSlug, currentTitle, allArticles
       <section className="mx-auto max-w-6xl px-6 sm:px-8 mt-20 animate-fade-up" aria-label="Loading recommendations">
         <div className="text-center py-12">
           <div className="inline-flex items-center gap-2 text-warm-500 dark:text-warm-400">
-            <Sparkles className="w-5 h-5 animate-spin" strokeWidth={2} />
-            <span>Finding your next read...</span>
+            <span className="animate-pulse">Finding your next read...</span>
           </div>
         </div>
       </section>
@@ -197,15 +195,12 @@ export default function ReadNextSection({ currentSlug, currentTitle, allArticles
     <section className="mx-auto max-w-6xl px-6 sm:px-8 mt-20 animate-fade-up" aria-labelledby="read-next-heading">
       {/* Section Header */}
       <header className="mb-10 text-center">
-        <div className="inline-flex items-center gap-2 text-warm-500 dark:text-warm-400 mb-3">
-          <Sparkles className="w-5 h-5" strokeWidth={2} />
-          <span className="text-sm font-medium uppercase tracking-[0.18em]">Curated for you</span>
-        </div>
-        <h2 id="read-next-heading" className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-warm-900 dark:text-warm-100">
+        <span className="text-sm font-medium uppercase tracking-[0.18em] text-warm-500 dark:text-warm-400">Curated for you</span>
+        <h2 id="read-next-heading" className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-warm-900 dark:text-warm-100 mt-2">
           What to read next
         </h2>
         <p className="mt-3 text-base text-warm-600 dark:text-warm-400 max-w-2xl mx-auto">
-          Hand-picked by our AI editor based on what you just finished reading. Each recommendation builds on the ideas in <strong>"{currentTitle}"</strong>.
+          Hand-picked based on what you just finished reading. Each recommendation builds on the ideas in <strong>"{currentTitle}"</strong>.
         </p>
       </header>
       
