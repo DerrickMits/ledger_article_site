@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import {
   getAllSlugs,
   getArticleBySlug,
+  getAllArticles,
 } from "@/lib/articles";
 import { SITE } from "@/lib/site";
 import MarkdownContent from "@/components/MarkdownContent";
@@ -12,6 +13,7 @@ import ReadingProgress from "@/components/ReadingProgress";
 import TableOfContents, { MobileTOC } from "@/components/TableOfContents";
 import ExecutiveSummary from "@/components/ExecutiveSummary";
 import ArticleMetaRow from "@/components/ArticleMetaRow";
+import ReadNextSection from "@/components/ReadNextSection";
 
 /** Pre-render every article so future drops ship as static files. */
 export function generateStaticParams() {
@@ -48,6 +50,8 @@ export default async function ArticlePage({
   const { slug } = await params;
   const article = getArticleBySlug(slug);
   if (!article) notFound();
+  
+  const allArticles = getAllArticles();
 
   return (
     <>
@@ -114,6 +118,9 @@ export default async function ArticlePage({
           content={article.content} 
           headings={article.headings} 
         />
+
+        {/* ---------- Read Next Recommendations ---------- */}
+        <ReadNextSection currentSlug={slug} currentTitle={article.title} allArticles={allArticles} />
 
         {/* ---------- Closing call to action ---------- */}
         <div className="article-cta-wrapper mx-auto max-w-6xl px-6 sm:px-8 mt-20">
