@@ -1,7 +1,7 @@
 /**
  * Server-side recommendation engine using Google Gemini API.
  * Analyzes article content to find the 3 most conceptually relevant "next reads".
- * Caches results to avoid repeated API calls.
+ * Uses in-memory cache for serverless environments, with file-based cache for local dev.
  */
 
 import { GoogleGenAI } from "@google/genai";
@@ -30,33 +30,49 @@ export interface CachedRecommendations {
 const CACHE_FILE = path.join(process.cwd(), "data", "recommendations-cache.json");
 const GEMINI_MODEL = "gemini-3.8-flash";
 
-// Ensure cache directory exists
+// Ensure cache directory exists (for local dev)
 const cacheDir = path.dirname(CACHE_FILE);
 if (!fs.existsSync(cacheDir)) {
-  fs.mkdirSync(cacheDir, { recursive: true });
+  try {
+    fs.mkdirSync(cacheDir, { recursive: true });
+  } catch {
+    // Ignore errors (e.g., read-only filesystem on Vercel)
+  }
 }
 
 /* ------------------------------------------------------------------ */
-/*  Cache Helpers                                                     */
+/*  In-Memory Cache (for serverless)                                  */
 /* ------------------------------------------------------------------ */
 
-function loadCache(): CachedRecommendations {
+let memoryCache: CachedRecommendations | null = null;
+
+function loadMemoryCache(): CachedRecommendations {
+  if (memoryCache) return memoryCache;
+  
+  // Try to load from file (works locally, fails gracefully on Vercel)
+  let loaded: CachedRecommendations = {};
   try {
     if (fs.existsSync(CACHE_FILE)) {
       const content = fs.readFileSync(CACHE_FILE, "utf8");
-      return JSON.parse(content);
+      loaded = JSON.parse(content);
     }
   } catch (err) {
-    console.warn("[Recommendations] Failed to load cache:", err);
+    console.warn("[Recommendations] Could not load file cache:", err instanceof Error ? err.message : err);
   }
-  return {};
+  
+  memoryCache = loaded;
+  return memoryCache;
 }
 
-function saveCache(cache: CachedRecommendations): void {
+function saveMemoryCache(cache: CachedRecommendations): void {
+  memoryCache = cache;
+  
+  // Try to persist to file (works locally, ignored on Vercel)
   try {
     fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
   } catch (err) {
-    console.error("[Recommendations] Failed to save cache:", err);
+    // Expected on Vercel's read-only filesystem
+    console.log("[Recommendations] In-memory cache updated (file persistence not available)");
   }
 }
 
@@ -183,7 +199,7 @@ export async function generateRecommendations(
   currentSlug: string,
   forceRefresh = false
 ): Promise<Recommendation[]> {
-  const cache = loadCache();
+  const cache = loadMemoryCache();
   
   // Return cached if available and not forcing refresh
   if (!forceRefresh && cache[currentSlug]) {
@@ -268,13 +284,13 @@ export async function generateRecommendations(
     
     // Cache the result
     cache[currentSlug] = recommendations;
-    saveCache(cache);
+    saveMemoryCache(cache);
     
     console.log(`[Recommendations] Generated and cached for ${currentSlug}`);
     return recommendations;
     
   } catch (err) {
-    console.error("[Recommendations] Generation failed:", err);
+    console.error("[Recommendations] Generation failed:", err instanceof Error ? err.message : err);
     return getFallbackRecommendations(currentSlug);
   }
 }
